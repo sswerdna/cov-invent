@@ -1,7 +1,7 @@
 from Tkinter import *
 import sqlite3 as sql, main
 
-filename = "/home/stephen/inventory/~invdb.db"
+filename = "./~invdb.db"
 def go(root):	
 	root.destroy()
 	master = Tk()

@@ -1,7 +1,7 @@
 from Tkinter import *
 import main, sqlite3 as sql
 
-filename = "/home/stephen/inventory/~invdb.db"
+filename = "./~invdb.db"
 def go(root=None):
 	if hasattr(root,"destroy"):
 		root.destroy()
@@ -22,24 +22,34 @@ def go(root=None):
 	ln_box.grid(row = 3, column = 1)
 #	insert = lambda x=master:insertx(x) # for Debugging
 
+
 	def insert(tk_wrap):
-		loc = loc_box.get() 
+		loc = loc_box.get()
 		pn  = pn_box.get()
 		ln  = ln_box.get()
-		restart(tk_wrap)
 		conn = sql.connect(filename)
 		curs = conn.cursor()
+		print ln,pn,loc
 		curs.execute("SELECT * FROM items WHERE lot_number=?", (ln,))
+		print loc,pn,ln
 		if curs.fetchone() is None: 
+			print "inserting\n"
 			curs.execute("INSERT INTO items (lot_number,part_number,location) VALUES (?,?,?)",(ln,pn,loc))
+			conn.commit()
 		else:
+			print "updating\n"
 			curs.execute("UPDATE items SET location=? WHERE lot_number=?", (loc,ln))
+
+		restart(tk_wrap)
+		conn.commit()
+		conn.close()
 
 	insertcom = lambda tk_wrap = master:insert(tk_wrap)
 	finish = Button(master,text = "Enter item", command = insertcom)
 	finish.grid(row = 4, column = 1)
 	loc_box.focus_set()
 	master.mainloop()
+
 def insertx(master): # for Debugging
 	master.destroy()
 	root = Tk()

@@ -1,7 +1,7 @@
 from Tkinter import *
 import main, sqlite3 as sql
 
-filename = "/home/stephen/inventory/~invdb.db"
+filename = "./~invdb.db"
 class pl_block:
 	def __init__(self,tk_wrap,num_entries = 10):
 		self.pns = []

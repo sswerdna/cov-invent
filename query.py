@@ -2,7 +2,7 @@ from Tkinter import *
 import main, sqlite3 as sql
 
 class query:
-	def __init__(self,type_flag,calling_tk,filename="/home/stephen/inventory/~invdb.db"):
+	def __init__(self,type_flag,calling_tk,filename="./~invdb.db"):
 		calling_tk.destroy()
 		self.conn = sql.connect(filename)
 		self.curs = self.conn.cursor()
@@ -55,6 +55,7 @@ class query:
 		if len(self.data) == 0:
 			Label(self.report, text = "No Results Found").pack()
 			Button(self.report, text = "Return", command = reset).pack()
+			self.report.mainloop()
 		else:
 			Label(self.report, text = "Report"  ).grid(row = 0, column = 1, padx = 3, pady = 3)
 			Label(self.report, text = "Part No.").grid(row = 1, column = 0, padx = 3, pady = 3)
