@@ -8,9 +8,21 @@ import entry, mass_entry,query, delete,os, sqlite3 as sql
 
 def go():
 	if not os.path.exists("./~invdb.db"):
+		schema ="""
+			CREATE TABLE items
+				(
+				p_id INTEGER PRIMARY KEY AUTOINCREMENT,
+				lot_number INTEGER,
+				part_number VARCHAR(30),
+				location VARCHAR(10),
+				description VARCHAR(255),
+				overstock BOOL NOT NULL
+			)
+			"""
+
 		conn = sql.connect("./~invdb.db")
 		curs = conn.cursor()
-		curs.execute("CREATE TABLE items (lot_number int NOT NULL, part_number varchar(30) NOT NULL, location varchar(10), PRIMARY KEY (lot_number))")
+		curs.execute(schema)
 		conn.commit()
 		conn.close()
 	root = Tk()
