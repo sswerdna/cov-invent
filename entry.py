@@ -29,15 +29,15 @@ def go(root=None):
 		ln  = ln_box.get()
 		conn = sql.connect(filename)
 		curs = conn.cursor()
-		print ln,pn,loc
+		#print ln,pn,loc
 		curs.execute("SELECT * FROM items WHERE lot_number=?", (ln,))
-		print loc,pn,ln
+		#print loc,pn,ln
 		if curs.fetchone() is None: 
-			print "inserting\n"
+			#print "inserting\n"
 			curs.execute("INSERT INTO items (lot_number,part_number,location) VALUES (?,?,?)",(ln,pn,loc))
 			conn.commit()
 		else:
-			print "updating\n"
+			#print "updating\n"
 			curs.execute("UPDATE items SET location=? WHERE lot_number=?", (loc,ln))
 
 		restart(tk_wrap)
