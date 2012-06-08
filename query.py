@@ -1,5 +1,5 @@
 from Tkinter import *
-import main, sqlite3 as sql
+import main, sqlite3 as sql,csv, tkMessageBox
 
 class query:
 	def __init__(self,type_flag,calling_tk,filename="./~invdb.db"):
@@ -53,24 +53,37 @@ class query:
 		self.report = Tk()
 		reset = lambda x=self.report: go_back(x)
 		if len(self.data) == 0:
-			Label(self.report, text = "No Results Found").pack()
-			Button(self.report, text = "Return", command = reset).pack()
+			Label(self.report, text = "No Results Found").grid(row = 0, column = 0, columnspan = 2)
+			Button(self.report, text = "Return", command = reset).grid(row = 1, column = 0, padx = 3)
+			qcom = lambda tk_wrap = self.report: go(tk_wrap)
+			Button(self.report, text = "Query Again", command = qcom).grid(row = 1, column = 1, padx = 3)
 			self.report.mainloop()
 		else:
-			Label(self.report, text = "Report"  ).grid(row = 0, column = 1, padx = 3, pady = 3)
-			Label(self.report, text = "Part No.").grid(row = 1, column = 0, padx = 3, pady = 3)
-			Label(self.report, text = "Lot No." ).grid(row = 1, column = 1, padx = 3, pady = 3)
-			Label(self.report, text = "Location").grid(row = 1, column = 2, padx = 3, pady = 3)
+			Label(self.report, text = "Report"     ).grid(row = 0, column = 0, padx = 3, pady = 3, columnspan = 4)
+			Label(self.report, text = "Part No."   ).grid(row = 1, column = 0, padx = 3, pady = 3)
+			Label(self.report, text = "Lot No."    ).grid(row = 1, column = 1, padx = 3, pady = 3)
+			Label(self.report, text = "Description").grid(row = 1, column = 2, padx = 3, pady = 3)
+			Label(self.report, text = "Location"   ).grid(row = 1, column = 3, padx = 3, pady = 3)
 		for x in self.data:
 			datarow = self.data.index(x)+2
-			Label(self.report, text = str(x[1])).grid(row = datarow, column = 0, padx = 3, pady = 3)
-			Label(self.report, text = str(x[0])).grid(row = datarow, column = 1, padx = 3, pady = 3)
-			Label(self.report, text = str(x[2])).grid(row = datarow, column = 2, padx = 3, pady = 3)
+			Label(self.report, text = str(x[2])).grid(row = datarow, column = 0, padx = 3, pady = 3)
+			Label(self.report, text = str(x[1])).grid(row = datarow, column = 1, padx = 3, pady = 3)
+			Label(self.report, text = str(x[4])).grid(row = datarow, column = 2, padx = 3, pady = 3)
+			Label(self.report, text = str(x[3])).grid(row = datarow, column = 3, padx = 3, pady = 3)
+		reporter = Button(self.report,text = "Generate Excel Report",command = self.create_csv)
+		reporter.grid(row = len(self.data) + 2, column = 0)
 		exit = Button(self.report, text = "Return",command = reset)
-		exit.grid(row = len(self.data) + 2, column = 2)
+		exit.grid(row = len(self.data) + 2, column = 3)
+	def create_csv(self):	
+		docwriter = csv.writer(open("export.csv",'w'))
+		docwriter.writerow(["Part No.", "Lot No.", "Description", "Location"])
+		for record in self.data:
+			docwriter.writerow([record[2],record[1],record[4],record[3]])
+		tkMessageBox.showinfo("File Location","The file is named export.csv, and is stored in the directory with your database")
 
-def go(root):
-	root.destroy()
+def go(root=None):
+	if hasattr(root,'destroy'):
+		root.destroy()
 	master = Tk()
 	part_no_query = lambda type_flag = 0: query(type_flag,calling_tk = master)
 	lot_no_query =  lambda type_flag = 1: query(type_flag,calling_tk = master)
@@ -89,5 +102,6 @@ def go(root):
 	master.mainloop()
 
 def go_back(master):
-	master.destroy()
+	if hasattr(master,"destroy"):
+		master.destroy()
 	main.go()
