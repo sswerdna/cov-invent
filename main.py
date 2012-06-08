@@ -11,12 +11,12 @@ def go():
 		schema ="""
 			CREATE TABLE items
 				(
-				p_id INTEGER PRIMARY KEY AUTOINCREMENT,
-				lot_number INTEGER,
+				p_id        INTEGER PRIMARY KEY AUTOINCREMENT,
+				lot_number  INTEGER,
 				part_number VARCHAR(30),
-				location VARCHAR(10),
+				location    VARCHAR(10),
 				description VARCHAR(255),
-				overstock BOOL NOT NULL
+				overstock   BOOL NOT NULL
 			)
 			"""
 
