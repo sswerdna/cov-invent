@@ -1,7 +1,7 @@
 from Tkinter import *
 import main, sqlite3 as sql
 
-filename = "./~invdb.db"
+filename = "./.invdb.db"
 class go:
 	def __init__(self,root = None):
 		#destroy the old window in a safe manner

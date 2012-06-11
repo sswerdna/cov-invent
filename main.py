@@ -5,9 +5,10 @@
 
 from Tkinter import *
 import entry, mass_entry,query, delete,os, sqlite3 as sql
-
+#flow control comes here
 def go():
-	if not os.path.exists("./~invdb.db"):
+	#if the database doesn't exist, generate it.
+	if not os.path.exists("./.invdb.db"):
 		schema ="""
 			CREATE TABLE items
 				(
@@ -20,16 +21,19 @@ def go():
 			)
 			"""
 
-		conn = sql.connect("./~invdb.db")
+		conn = sql.connect("./.invdb.db")
 		curs = conn.cursor()
 		curs.execute(schema)
 		conn.commit()
 		conn.close()
+	
 	root = Tk()
+	#commands for the GUI buttons, which destroy their argument if it has a destroy method
 	se = lambda x=root: entry.go(x)
 	me = lambda x=root: mass_entry.go(x)
 	qu = lambda x=root: query.go(x)
 	de = lambda x=root: delete.go(x)
+	#Static elements, using the lambdas above
 	splash = Label(root,text = "Hello, welcome to Inventory")
 	splash.pack(padx = 3, pady = 3)
 	single_entry = Button(root,text="Enter items individually", command = se)
@@ -40,7 +44,9 @@ def go():
 	querier.pack(padx = 3, pady = 3)
 	deleter = Button(root,text = "Delete an object from the database",command = de)
 	deleter.pack(padx = 3, pady = 3)
+	Button(root,text = "Quit", command = root.destroy).pack()
 	root.mainloop()
 
+#Enter here
 if __name__ == "__main__":
 	go()
