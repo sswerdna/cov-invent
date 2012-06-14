@@ -3,11 +3,13 @@ import main, sqlite3 as sql
 
 filename = "./.invdb.db" #This may cause problems in other installs, I'm not really sure.
 #the callability of classes is pretty convenient here, as it allows to use them similarly to functions when they are called.
+#this particular class implements the mass entry of parts and lots from a single location,
+#for convenience when initially stocking the database.
 class go:
 	def __init__(self,root=None,num_entries = 10):
 		if hasattr(root,'destroy'):
 			root.destroy()
-		#The only static element of the GUI
+		#The static elements of the GUI
 		self.master = Tk()
 		splash = Label(self.master, text = "Enter your location, then scan items, part number first, then lot number.")
 		splash.grid(row = 0,column = 0, columnspan = 2)
@@ -39,6 +41,7 @@ class go:
 		for x in range(10):
 			self.pn_boxes.append(Entry(self.master, highlightcolor = "yellow"))
 			self.ln_boxes.append(Entry(self.master, highlightcolor = "yellow",))
+			#don't take focus so scanning using barcodes goes faster
 			self.desc_boxes.append(Entry(self.master,highlightcolor = "yellow",takefocus=0))
 			self.pn_boxes[self.num_entries].grid(row = self.num_entries + 3, column = 0)
 			self.ln_boxes[self.num_entries].grid(row = self.num_entries + 3, column = 1)
@@ -59,6 +62,7 @@ class go:
 		for j in range(5):
 			self.pn_boxes.append(Entry(self.master, highlightcolor = "yellow"))
 			self.ln_boxes.append(Entry(self.master, highlightcolor="yellow"))
+			#see above regarding focus considerations
 			self.desc_boxes.append(Entry(self.master,highlightcolor = "yellow",takefocus=0))
 			self.pn_boxes[self.num_entries].grid(row = self.num_entries + 3,column = 0)
 			self.ln_boxes[self.num_entries].grid(row = self.num_entries + 3,column = 1)
