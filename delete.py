@@ -26,6 +26,7 @@ def go(root=None):
 
 		if data is not None: #SAFETY!
 			curs.execute("DELETE FROM items WHERE p_id=?" % (data[0],))
+			conn.commit()
 			reset(master)
 		else:   #again with the nested scopes. obviously lambdas accept two arguments,
 			#but i need to be sure both parts execute. perhaps xor will work for that.
