@@ -78,6 +78,8 @@ class go:
 		curs = conn.cursor()
 		curs.execute("SELECT description FROM items WHERE part_number=?",(pn,))
 		data = curs.fetchone()
+		if pn == "":
+			return
 		if data is not None:
 			if data[0] != "":
 				self.desc_var.set(data[0])

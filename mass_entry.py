@@ -84,7 +84,7 @@ class go:
 			#check if the lot number is already in the database, if it is, don't add a second one, just update where it is.
 			curs.execute("SELECT * FROM items WHERE lot_number=?",(x[0],))
 			if curs.fetchone() is None:
-				curs.execute("INSERT INTO items (lot_number,part_number,location,overstock,description) VALUES (?,?,?)",(x[0],x[1],self.loc,0,x[2]))
+				curs.execute("INSERT INTO items (lot_number,part_number,location,overstock,description) VALUES (?,?,?,,?)",(x[0],x[1],self.loc,0,x[2]))
 			else:
 				curs.execute("UPDATE items SET location=? WHERE lot_number=?",(self.loc,x[0]))
 		conn.commit()
@@ -97,6 +97,8 @@ class go:
 		index = self.pn_boxes.index(event.widget)#find the calling widget
 		conn = sql.connect(filename)
 		curs = conn.cursor()
+		if self.pn_boxes[index].get() == "":
+			return
 		curs.execute("SELECT description FROM items WHERE part_number=?",(self.pn_boxes[index].get(),))#check the DB for any mathching part numbers
 		data = curs.fetchone()
 		if data is not None:

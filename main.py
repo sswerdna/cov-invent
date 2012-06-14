@@ -4,7 +4,8 @@
 #this is the entry point, main.py
 
 from Tkinter import *
-import entry, mass_entry,query, delete,os, sqlite3 as sql
+import entry, mass_entry,query, delete, os, sqlite3 as sql
+
 #flow control comes here
 def go():
 	#if the database doesn't exist, generate it.
