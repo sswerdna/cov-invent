@@ -10,6 +10,7 @@ class go:
  
 		#generate splash Text
 		self.master = Tk()
+		self.master.bind("<Return>",self._return_handler)
 		splash = Label(self.master,text = "Please scan your item, starting with location, and then part number, and the lot number.")
 		splash.grid(row = 0, column = 0, padx = 3, pady = 3, columnspan = 2)
 
@@ -88,6 +89,8 @@ class go:
 					return
 		else:
 			return
+	def _return_handler(self,event):
+		self.insert()
 
 def restart(root=None):
 	if hasattr(root,"destroy"):

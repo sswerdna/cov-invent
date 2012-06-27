@@ -12,6 +12,7 @@ class query:
 		self.type_flag = type_flag
 		#Create the shell of a GUI, with variable text for the splash
 		self.root = Tk()
+		self.root.bind("<Return>",self._return_handler)
 		vartext = ["part numbers or numbers","lot number or numbers","location or locations"]
 		self.splash_text = "Please enter the %s you would like to query." % vartext[type_flag]
 		self.splash = Label(self.root,text = self.splash_text)
@@ -85,7 +86,8 @@ class query:
 		for record in self.data:
 			docwriter.writerow([record[2],record[1],record[4],record[3]])
 		tkMessageBox.showinfo("File Location","The file is named export.csv, and is stored in the directory with your database")
-
+	def _return_handler(self,event):
+		self.get_requests()
 def go(root=None):
 	#safe destruction of the prior window, to prevent clutter in the window
 	if hasattr(root,'destroy'):

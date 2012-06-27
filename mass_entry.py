@@ -11,6 +11,7 @@ class go:
 			root.destroy()
 		#The static elements of the GUI
 		self.master = Tk()
+		self.master.bind("<Return>",self._return_handler)
 		splash = Label(self.master, text = "Enter your location, then scan items, part number first, then lot number.")
 		splash.grid(row = 0,column = 0, columnspan = 2)
 		self.loc_label = Label(self.master, text = "Location: ")
@@ -107,3 +108,5 @@ class go:
 			self.desc_boxes[index]['state']='disabled'
 		else:
 			pass
+	def _return_handler(self,event):
+		self.log()
